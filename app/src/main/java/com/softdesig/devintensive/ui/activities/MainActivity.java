@@ -1,24 +1,29 @@
 package com.softdesig.devintensive.ui.activities;
 
 import android.graphics.Color;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import com.softdesig.devintensive.R;
 import com.softdesig.devintensive.utils.ConstantManager;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener{
+public class MainActivity extends BaseActivity implements View.OnClickListener{
     private static final String TAG = ConstantManager.TAG_PREFIX+"Main Activity";
+    private ImageView mCallImg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Log.d(TAG, "onCreate");
+        mCallImg = (ImageView)findViewById(R.id.call_img);
+        mCallImg.setOnClickListener(this);
         if(savedInstanceState == null){
             //активити запускается впервые
         } else{
@@ -64,12 +69,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View view) {
-
+        switch (view.getId()){
+            case R.id.call_img:
+                showProgress();
+                runWithDelay();
+                break;
+        }
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         Log.d(TAG, "onSaveInstanceState");
+    }
+
+    private void runWithDelay(){
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                hideProgress();
+            }
+        }, 5000);
     }
 }
