@@ -278,11 +278,17 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         }
     }
 
+    /**
+     * Показывает Snackbar
+     * @param message
+     */
     private void showSnackBar(String message) {
         Snackbar.make(mCoordinatorLayout, message, Snackbar.LENGTH_LONG).show();
     }
 
-
+    /**
+     * Настраивает Toolbar
+     */
     private void setupToolbar() {
         setSupportActionBar(mToolbar);
         ActionBar actionBar = getSupportActionBar();
@@ -293,6 +299,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         }
     }
 
+    /**
+     * Настраивает DrawerLayout
+     */
     private void setupDrawer(){
         NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener(){
@@ -364,6 +373,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         }
     }
 
+    /**
+     * Обновляет изображение профиля
+     * @param selectedImage ссылка на изображение
+     */
     private void insertProfileImage(Uri selectedImage) {
         Picasso.with(this)
                 .load(selectedImage)
@@ -440,6 +453,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         mCollapsingToolbarLayout.setLayoutParams(mappBarParams);
     }
 
+    /**
+     * Возвращает диалог смены фотографии
+     * @param id
+     * @return
+     */
     @Override
     protected Dialog onCreateDialog(int id) {
         switch (id){
