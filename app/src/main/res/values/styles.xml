@@ -76,4 +76,9 @@
         <item name="android:text">@string/auth.title.forgot_pass</item>
         <item name="android:textColor">@color/gray_light</item>
     </style>
+
+    <style name="avatar_style">
+        <item name="android:background">@drawable/ic_add_a_photo_black_24dp</item>
+        <item name="android:layout_marginTop">@dimen/margin_small_16</item>
+    </style>
 </resources>

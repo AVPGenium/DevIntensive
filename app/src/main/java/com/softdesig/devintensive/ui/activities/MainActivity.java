@@ -2,6 +2,7 @@ package com.softdesig.devintensive.ui.activities;
 
 import android.Manifest;
 import android.app.Dialog;
+import android.content.ActivityNotFoundException;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -73,6 +74,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Log.d(TAG, "onCreate");
+        List<EditText> mEditTexts;
 
         mDataManager = DataManager.getInstance();
         mCallImg = (ImageView)findViewById(R.id.call_img);
@@ -168,10 +170,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
     @Override
     public void onClick(View view) {
         switch (view.getId()){
-            case R.id.call_img:
-                showProgress();
-                runWithDelay();
-                break;
             case R.id.fab:
                 if(mCurrentEditMode == 0){
                     changeEditMode(1);
@@ -184,6 +182,72 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
             case R.id.profile_placeholder:
                 //TODO: 2.07.2016 Сделать выбор, откуда загружать фото
                 showDialog(ConstantManager.LOAD_PROFILE_PHOTO);
+                break;
+            case R.id.call_img:
+                String number = mUserPhone.getText().toString();
+                if (!number.equals("") || !number.equals("null")) {
+                    Intent callIntent = new Intent(Intent.ACTION_CALL, Uri.fromParts("tel", number, null));
+
+                    //проверка разрешения на звонок
+                    if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                        ActivityCompat.requestPermissions(this, new String[]{
+                                android.Manifest.permission.CALL_PHONE
+                        }, ConstantManager.PERMISSION_CALL_REQUEST_CODE);
+
+                        Snackbar.make(mCoordinatorLayout, R.string.snackbar_message_need_take_permissions, Snackbar.LENGTH_LONG)
+                                .setAction("Разрешить", new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        openApplicationSettings();
+                                    }
+                                }).show();
+                    } else {
+                        try {
+                            startActivity(callIntent);
+                        } catch (ActivityNotFoundException e) {
+                            showSnackBar(getString(R.string.main_activity_error_not_found_call_app));
+                        }
+                    }
+                }
+                break;
+
+            case R.id.mail_img:
+                String email = mUserMail.getText().toString();
+                if (!email.equals("") || !email.equals("null")) {
+                    Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", email, null));
+                    try {
+                        startActivity(Intent.createChooser(emailIntent, "Отправка письма..."));
+                    } catch (ActivityNotFoundException e) {
+                        //showSnackBar(getString(R.string.main_activity_error_not_found_email_app));
+                    }
+                }
+
+                break;
+
+            case R.id.vk_img:
+                String vkUrl = mVk.getText().toString();
+                if (!vkUrl.equals("") || !vkUrl.equals("null")) {
+                    Intent vkIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://vk.com/" + vkUrl));
+
+                    try {
+                        startActivity(vkIntent);
+                    } catch (ActivityNotFoundException e) {
+                        showSnackBar(getString(R.string.main_activity_error_not_found_vk_app));
+                    }
+                }
+                break;
+
+            case R.id.git_img:
+                String gitUrl = mGit.getText().toString();
+                if (!gitUrl.equals("") || !gitUrl.equals("null")) {
+                    Intent gitIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/" + gitUrl));
+
+                    try {
+                        startActivity(gitIntent);
+                    } catch (ActivityNotFoundException e) {
+                        showSnackBar(getString(R.string.main_activity_error_not_found_git_app));
+                    }
+                }
                 break;
         }
     }
@@ -205,9 +269,19 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         }, 5000);
     }
 
-    private void showSnackbar(String message){
+    @Override
+    public void onBackPressed() {
+        if (mNavigationDrawer.isDrawerOpen(GravityCompat.START)) {
+            mNavigationDrawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    private void showSnackBar(String message) {
         Snackbar.make(mCoordinatorLayout, message, Snackbar.LENGTH_LONG).show();
     }
+
 
     private void setupToolbar() {
         setSupportActionBar(mToolbar);
@@ -224,7 +298,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener(){
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
-                showSnackbar(item.getTitle().toString());
+                showSnackBar(item.getTitle().toString());
                 item.setChecked(true);
                 mNavigationDrawer.closeDrawer(GravityCompat.START);
                 return false;

@@ -14,6 +14,7 @@ public interface ConstantManager {
     String USER_ABOUT_KEY = "USER_ABOUT_KEY";
     String USER_PHOTO_KEY = "USER_PHOTO_KEY";
 
+    int PERMISSION_CALL_REQUEST_CODE = 204;
     int LOAD_PROFILE_PHOTO = 1;
     int REQUEST_CAMERA_PICTURE = 99;
     int REQUEST_GALLERY_PICTURE = 88;
