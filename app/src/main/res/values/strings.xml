@@ -1,3 +1,25 @@
 <resources>
     <string name="app_name">Поляков Андрей</string>
+    <!-- Главная вьюха -->
+    <string name="user_profile.placeholder.image">Изменить фотографию профиля</string>
+    <string name="user_profile_dialog.gallery">Загрузить из галлереи</string>
+    <string name="user_profile_dialog.camera">Сделать снимок</string>
+    <string name="user_profile_dialog.cancel">Отменить</string>
+    <string name="user_profile_dialog.title">Изменить фотографию профиля</string>
+    <string name="user_profile.chose.message">Выберите фото</string>
+    <!-- Авторизация -->
+    <string name="auth.title.input">ВОЙТИ</string>
+    <string name="auth.hint.e_mail">E-mail</string>
+    <string name="auth.hint.pass">Пароль</string>
+    <string name="auth.title.forgot_pass">Забыли пароль?</string>
+
+    <string name="snackbar.message.need_take_permissions">Необходимо дать требуемые разрешения</string>
+    <string name="main_activity_error_not_found_call_app">Не найдено приложение для звонка</string>
+    <string name="main_activity.error.not_found_email_app">Не найдено приложения для отправки email</string>
+    <string name="main_activity_error_not_found_vk_app">Не найдено приложения для открытия страницы VK</string>
+    <string name="main_activity_error_not_found_git_app">Не найдено приложения для открытия репозитория</string>
+    <string name="user_profile.invalidate.number">Неверный формат номера телефона</string>
+    <string name="user_profile.invalidate.email">Неверный формат email адреса</string>
+    <string name="user_profile.invalidate.vk">Неверный формат адреса VK</string>
+    <string name="user_profile.invalidate.github">Неверный формат ссылки на GitHub</string>
 </resources>
