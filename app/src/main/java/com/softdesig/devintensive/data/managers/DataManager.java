@@ -1,14 +1,26 @@
 package com.softdesig.devintensive.data.managers;
 
-/**
- * Created by Admin on 29.06.2016.
- */
+import android.content.Context;
+
+import com.softdesig.devintensive.data.network.RestService;
+import com.softdesig.devintensive.data.network.ServiceGenerator;
+import com.softdesig.devintensive.data.network.request.UserLoginReq;
+import com.softdesig.devintensive.data.network.responce.UserModelRes;
+import com.softdesig.devintensive.utils.DevintensiveApplication;
+
+import retrofit2.Call;
+
 public class DataManager {
     private static DataManager INSTANCE = null;
     private PreferenceManager mPreferenceManager;
+    private RestService mRestService;
+
+    private Context mContext;
 
     public DataManager() {
-        mPreferenceManager = new PreferenceManager();
+        this.mPreferenceManager = new PreferenceManager();
+        //this.mContext = DevintensiveApplication.getContext();
+        this.mRestService = ServiceGenerator.createService(RestService.class);
     }
 
     public PreferenceManager getPreferenceManager() {
@@ -21,4 +33,14 @@ public class DataManager {
         }
         return INSTANCE;
     }
+
+    public Context getContext() {
+        return mContext;
+    }
+
+    //region ============ Network ======================
+    public Call<UserModelRes> loginUser(UserLoginReq userLoginReq){
+        return mRestService.loginUser(userLoginReq);
+    }
+    //endregion
 }
