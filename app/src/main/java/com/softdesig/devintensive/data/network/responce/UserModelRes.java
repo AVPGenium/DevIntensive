@@ -6,9 +6,6 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Admin on 11.07.2016.
- */
 public class UserModelRes {
     @SerializedName("success")
     @Expose
@@ -36,6 +33,17 @@ public class UserModelRes {
         @Expose
         private String updated;
 
+        public String getVk() {
+            return vk;
+        }
+
+        public String getPhone() {
+            return phone;
+        }
+
+        public String getEmail() {
+            return email;
+        }
     }
 
     public class Data {
@@ -102,6 +110,17 @@ public class UserModelRes {
         @Expose
         private String updated;
 
+        public String getBio() {
+            return bio;
+        }
+
+        public String getAvatar() {
+            return avatar;
+        }
+
+        public String getPhoto() {
+            return photo;
+        }
     }
 
     public class Repo {
@@ -116,6 +135,9 @@ public class UserModelRes {
         @Expose
         private String title;
 
+        public String getGit() {
+            return git;
+        }
     }
 
     public class Repositories {
@@ -127,6 +149,9 @@ public class UserModelRes {
         @Expose
         private String updated;
 
+        public List<Repo> getRepo() {
+            return repo;
+        }
     }
 
     public class User {
@@ -171,6 +196,26 @@ public class UserModelRes {
 
         public ProfileValues getProfileValues() {
             return profileValues;
+        }
+
+        public Repositories getRepositories() {
+            return repositories;
+        }
+
+        public String getFirstName() {
+            return firstName;
+        }
+
+        public String getSecondName() {
+            return secondName;
+        }
+
+        public Contacts getContacts() {
+            return contacts;
+        }
+
+        public PublicInfo getPublicInfo() {
+            return publicInfo;
         }
     }
 }

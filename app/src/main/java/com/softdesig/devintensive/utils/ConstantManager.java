@@ -5,7 +5,7 @@ public interface ConstantManager {
     String COLOR_MODE_KEY = "COLOR_MODE_KEY";
     String EDIT_MODE_KEY = "EDIT_MODE_KEY";
     String USER_PHONE_KEY = "USER_PHONE_KEY";
-    String USER_EMAIL_KEY ="USER_PHONE_KEY";
+    String USER_EMAIL_KEY ="USER_EMAIL_KEY";
     String USER_VK_KEY = "USER_VK_KEY";
     String USER_GIT_KEY = "USER_GIT_KEY";
     String USER_ABOUT_KEY = "USER_ABOUT_KEY";
@@ -24,4 +24,5 @@ public interface ConstantManager {
     String USER_RATING_KEY = "USER_RATTING_KEY";
     String USER_CODE_LINES_KEY = "USER_CODE_LINES_KEY";
     String USER_PROJECT_KEY = "USER_PROJECT_KEY";
+    String USER_AVATAR_KEY = "USER_AVATAR_KEY";
 }

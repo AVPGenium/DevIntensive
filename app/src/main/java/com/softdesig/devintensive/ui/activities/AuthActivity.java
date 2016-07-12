@@ -17,6 +17,9 @@ import com.softdesig.devintensive.data.network.request.UserLoginReq;
 import com.softdesig.devintensive.data.network.responce.UserModelRes;
 import com.softdesig.devintensive.utils.NetworkStatusChecker;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -69,6 +72,9 @@ public class AuthActivity extends BaseActivity implements View.OnClickListener{
         mDataManager.getPreferenceManager().saveAuthTocken(userModelRes.getData().getToken());
         mDataManager.getPreferenceManager().saveUserId(userModelRes.getData().getUser().getId());
         saveUserValues(userModelRes);
+        saveUserFields(userModelRes);
+        saveUserPhoto(userModelRes);
+        saveUserAvatar(userModelRes);
         Intent loginIntent = new Intent(this, MainActivity.class);
         startActivity(loginIntent);
     }
@@ -107,5 +113,27 @@ public class AuthActivity extends BaseActivity implements View.OnClickListener{
             userModelRes.getData().getUser().getProfileValues().getProjects(),
         };
         mDataManager.getPreferenceManager().saveUserProfileValues(userValues);
+    }
+
+    private void saveUserFields(UserModelRes userModelRes){
+        List<String> userFields = new ArrayList<>();
+        userFields.add(userModelRes.getData().getUser().getContacts().getPhone());
+        userFields.add(userModelRes.getData().getUser().getContacts().getEmail());
+        userFields.add(userModelRes.getData().getUser().getContacts().getVk());
+        try{
+            userFields.add(userModelRes.getData().getUser().getRepositories().getRepo().get(0).getGit());
+        }catch (Exception e){
+            userFields.add("");
+        }
+        userFields.add(userModelRes.getData().getUser().getPublicInfo().getBio());
+        mDataManager.getPreferenceManager().saveUserProfileData(userFields);
+    }
+
+    private void saveUserPhoto(UserModelRes userModelRes){
+        mDataManager.getPreferenceManager().saveUserPhoto(Uri.parse(userModelRes.getData().getUser().getPublicInfo().getPhoto()));
+    }
+
+    private void saveUserAvatar(UserModelRes userModelRes){
+        mDataManager.getPreferenceManager().saveUserAvatar(Uri.parse(userModelRes.getData().getUser().getPublicInfo().getAvatar()));
     }
 }
