@@ -12,8 +12,17 @@ import java.util.List;
 public class PreferenceManager {
     private SharedPreferences mSharedPreferences;
     private static final String[] USER_FIELDS = {
-            ConstantManager.USER_PHONE_KEY, ConstantManager.USER_EMAIL_KEY,
-            ConstantManager.USER_VK_KEY, ConstantManager.USER_GIT_KEY, ConstantManager.USER_ABOUT_KEY
+            ConstantManager.USER_PHONE_KEY,
+            ConstantManager.USER_EMAIL_KEY,
+            ConstantManager.USER_VK_KEY,
+            ConstantManager.USER_GIT_KEY,
+            ConstantManager.USER_ABOUT_KEY
+    };
+
+    private static final String[] USER_VALUES = {
+            ConstantManager.USER_RATING_KEY,
+            ConstantManager.USER_CODE_LINES_KEY,
+            ConstantManager.USER_PROJECT_KEY
     };
 
     public PreferenceManager() {
@@ -46,5 +55,51 @@ public class PreferenceManager {
 
     public Uri loadUserPhoto(){
         return Uri.parse(mSharedPreferences.getString(ConstantManager.USER_PHOTO_KEY, "android.resource://com.softdesign.devintensive/drawable/header_bg_1"));
+    }
+
+    public void saveUserAvatar(Uri uri){
+        SharedPreferences.Editor editor = mSharedPreferences.edit();
+        editor.putString(ConstantManager.USER_AVATAR_KEY, uri.toString());
+        editor.apply();
+    }
+
+    public Uri loadUserAvatar(){
+        return Uri.parse(mSharedPreferences.getString(ConstantManager.USER_AVATAR_KEY, "android.resource://com.softdesign.devintensive/drawable/avatar"));
+    }
+
+    public void saveAuthTocken(String authTocken){
+        SharedPreferences.Editor editor = mSharedPreferences.edit();
+        editor.putString(ConstantManager.AUTH_TOCKEN_KEY, authTocken);
+        editor.apply();
+    }
+
+    public String getAuthTocken(){
+        return mSharedPreferences.getString(ConstantManager.AUTH_TOCKEN_KEY, "null");
+    }
+
+    public void saveUserId(String userId){
+        SharedPreferences.Editor editor = mSharedPreferences.edit();
+        editor.putString(ConstantManager.USER_ID_KEY, userId);
+        editor.apply();
+    }
+
+    public String getUserId(){
+        return mSharedPreferences.getString(ConstantManager.USER_ID_KEY, "null");
+    }
+
+    public void saveUserProfileValues(int[] userValues){
+        SharedPreferences.Editor editor = mSharedPreferences.edit();
+        for (int i = 0; i < USER_VALUES.length; i++) {
+            editor.putString(USER_VALUES[i], String.valueOf(userValues[i]));
+        }
+        editor.apply();
+    }
+
+    public List<String> loadUserProfileValues(){
+        List<String> userValues = new ArrayList<>();
+        userValues.add(mSharedPreferences.getString(ConstantManager.USER_RATING_KEY, "0"));
+        userValues.add(mSharedPreferences.getString(ConstantManager.USER_CODE_LINES_KEY, "0"));
+        userValues.add(mSharedPreferences.getString(ConstantManager.USER_PROJECT_KEY, "0"));
+        return userValues;
     }
 }

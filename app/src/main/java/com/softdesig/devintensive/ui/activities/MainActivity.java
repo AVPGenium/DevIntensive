@@ -7,9 +7,10 @@ import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
-import android.opengl.EGLExt;
 import android.os.Environment;
 import android.os.Handler;
 import android.provider.MediaStore;
@@ -23,6 +24,8 @@ import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawable;
+import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -35,11 +38,14 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
+import com.makeramen.roundedimageview.RoundedTransformationBuilder;
 import com.softdesig.devintensive.R;
 import com.softdesig.devintensive.data.managers.DataManager;
 import com.softdesig.devintensive.utils.ConstantManager;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Transformation;
 
 import java.io.File;
 import java.io.IOException;
@@ -62,6 +68,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
     private AppBarLayout.LayoutParams mappBarParams = null;
     private AppBarLayout mAppBarLayout;
     private ImageView mProfileImage;
+    private TextView mUserValueRating, mUserValueCodeLines, mUserValueProject;
+    private List<TextView> mUserValuesViews;
+    private ImageView mProfileAvatar;
+    private NavigationView mNavigationView;
 
     private File mPhotoFile = null;
     private Uri mSelectedImage = null;
@@ -91,6 +101,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         mProfilePlaceholder = (RelativeLayout)findViewById(R.id.profile_placeholder);
         mCollapsingToolbarLayout = (CollapsingToolbarLayout)findViewById(R.id.collapsing_toolbar);
         mProfileImage = (ImageView) findViewById(R.id.user_photo_img);
+        mUserValueRating = (TextView) findViewById(R.id.user_info_rait_txt);
+        mUserValueCodeLines = (TextView) findViewById(R.id.user_info_code_lines_txt);
+        mUserValueProject = (TextView) findViewById(R.id.user_info_project_txt);
+        mNavigationView = (NavigationView) findViewById(R.id.navigation_view);
+        mProfileAvatar = (ImageView) mNavigationView.getHeaderView(0).findViewById(R.id.user_avatar);
 
         mUserInfoViews = new ArrayList<>();
         mUserInfoViews.add(mUserPhone);
@@ -99,13 +114,20 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
         mUserInfoViews.add(mGit);
         mUserInfoViews.add(mAbout);
 
+        mUserValuesViews = new ArrayList<>();
+        mUserValuesViews.add(mUserValueRating);
+        mUserValuesViews.add(mUserValueCodeLines);
+        mUserValuesViews.add(mUserValueProject);
+
         mCallImg.setOnClickListener(this);
         mFloatingActionButton.setOnClickListener(this);
         mProfilePlaceholder.setOnClickListener(this);
 
         setupToolbar();
         setupDrawer();
-        loadUserInfoValue();
+        initUserFields();
+        initUserInfoValue();
+
         Picasso.with(this)
                 .load(mDataManager.getPreferenceManager().loadUserPhoto())
                 .placeholder(R.drawable.user_photo) // TODO: 05.07.2016 сделать плейсхолдер и transform + crop
@@ -138,7 +160,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
     protected void onPause(){
         super.onPause();
         Log.d(TAG, "onPause");
-        saveUserInfoValue();
+        saveUserFields();
     }
 
     @Override
@@ -313,6 +335,25 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
                 return false;
             }
         });
+        Transformation transformation = new RoundedTransformationBuilder()
+                .borderColor(Color.BLACK)
+                .borderWidthDp(3)
+                .cornerRadiusDp(30)
+                .oval(false)
+                .build();
+        Picasso.with(navigationView.getContext())
+                .load(mDataManager.getPreferenceManager().loadUserAvatar())
+                .transform(transformation)
+//               .placeholder(R.drawable.user_photo) // TODO: 05.07.2016 сделать плейсхолдер и transform + crop
+                .into(mProfileAvatar);
+
+//        ImageView mRoundedAvatar_img = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.user_avatar);
+//        Bitmap src = BitmapFactory.decodeFile(mDataManager.getPreferenceManager().loadUserAvatar().toString());
+//        if (src != null) {
+//            RoundedBitmapDrawable dr = RoundedBitmapDrawableFactory.create(getResources(), src);
+//            dr.setCornerRadius(Math.max(src.getWidth(), src.getHeight()) / 2.0f);
+//            mRoundedAvatar_img.setImageDrawable(dr);
+//        }
     }
 
     private void changeEditMode(int mode){
@@ -335,19 +376,19 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
                 hideProfilePlaceholder();
                 unlockToolbar();
                 mCollapsingToolbarLayout.setExpandedTitleColor(getResources().getColor(R.color.white));
-                saveUserInfoValue();
+                saveUserFields();
             }
         }
     }
 
-    private void loadUserInfoValue(){
+    private void initUserFields(){
         List<String> userData = mDataManager.getPreferenceManager().loadUserProfileData();
         for(int i = 0; i < userData.size(); i++){
             mUserInfoViews.get(i).setText(userData.get(i));
         }
     }
 
-    private void saveUserInfoValue(){
+    private void saveUserFields(){
         List<String> userData = new ArrayList<>();
         for (EditText userFieldView : mUserInfoViews) {
             userData.add(userFieldView.getText().toString());
@@ -382,6 +423,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
                 .load(selectedImage)
                 .into(mProfileImage);
         mDataManager.getPreferenceManager().saveUserPhoto(selectedImage);
+    }
+
+    private void initUserInfoValue(){
+        List<String> userData = mDataManager.getPreferenceManager().loadUserProfileValues();
+        for (int i = 0; i < userData.size(); i++){
+            mUserValuesViews.get(i).setText(userData.get(i));
+        }
     }
 
     private void loadPhotoFromGallery(){

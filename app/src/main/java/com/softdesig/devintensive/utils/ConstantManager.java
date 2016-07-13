@@ -1,14 +1,11 @@
 package com.softdesig.devintensive.utils;
 
-/**
- * Created by Admin on 25.06.2016.
- */
 public interface ConstantManager {
     String TAG_PREFIX = "DEV ";
     String COLOR_MODE_KEY = "COLOR_MODE_KEY";
     String EDIT_MODE_KEY = "EDIT_MODE_KEY";
     String USER_PHONE_KEY = "USER_PHONE_KEY";
-    String USER_EMAIL_KEY ="USER_PHONE_KEY";
+    String USER_EMAIL_KEY ="USER_EMAIL_KEY";
     String USER_VK_KEY = "USER_VK_KEY";
     String USER_GIT_KEY = "USER_GIT_KEY";
     String USER_ABOUT_KEY = "USER_ABOUT_KEY";
@@ -20,4 +17,12 @@ public interface ConstantManager {
     int REQUEST_GALLERY_PICTURE = 88;
     int PERMISSION_REQUEST_SETTINGS_CODE = 101;
     int CAMERA_REQUEST_PERMISSION_CODE = 102;
+
+    String AUTH_TOCKEN_KEY  = "AUTH_TOCKEN_KEY";
+    String USER_ID_KEY = "USER_ID_KEY";
+
+    String USER_RATING_KEY = "USER_RATTING_KEY";
+    String USER_CODE_LINES_KEY = "USER_CODE_LINES_KEY";
+    String USER_PROJECT_KEY = "USER_PROJECT_KEY";
+    String USER_AVATAR_KEY = "USER_AVATAR_KEY";
 }

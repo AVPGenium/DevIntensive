@@ -29,6 +29,7 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/user_info_rait_txt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
@@ -70,6 +71,7 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/user_info_code_lines_txt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
@@ -111,6 +113,7 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/user_info_project_txt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
@@ -316,7 +319,8 @@
                         android:hint="Репозиторий"
                         android:text="github.com/AVPGenium"
                         android:textColor="@color/black"
-                        android:textColorHint="@color/gray"/>
+                        android:textColorHint="@color/gray"
+                        android:inputType="textMultiLine"/>
                 </android.support.design.widget.TextInputLayout>
             </LinearLayout>
 
@@ -364,7 +368,8 @@
                         android:hint="О себе"
                         android:text="Я такой-то, такой-то"
                         android:textColor="@color/black"
-                        android:textColorHint="@color/gray"/>
+                        android:textColorHint="@color/gray"
+                        android:inputType="textMultiLine"/>
                 </android.support.design.widget.TextInputLayout>
             </LinearLayout>
 
