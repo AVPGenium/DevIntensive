@@ -343,17 +343,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener{
                 .build();
         Picasso.with(navigationView.getContext())
                 .load(mDataManager.getPreferenceManager().loadUserAvatar())
+                .fit()
                 .transform(transformation)
 //               .placeholder(R.drawable.user_photo) // TODO: 05.07.2016 сделать плейсхолдер и transform + crop
                 .into(mProfileAvatar);
-
-//        ImageView mRoundedAvatar_img = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.user_avatar);
-//        Bitmap src = BitmapFactory.decodeFile(mDataManager.getPreferenceManager().loadUserAvatar().toString());
-//        if (src != null) {
-//            RoundedBitmapDrawable dr = RoundedBitmapDrawableFactory.create(getResources(), src);
-//            dr.setCornerRadius(Math.max(src.getWidth(), src.getHeight()) / 2.0f);
-//            mRoundedAvatar_img.setImageDrawable(dr);
-//        }
     }
 
     private void changeEditMode(int mode){
